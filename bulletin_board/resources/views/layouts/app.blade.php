@@ -20,6 +20,11 @@
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/common.css') }}" rel="stylesheet">
+  {{-- <link href="{{ asset('css/post.css') }}" rel="stylesheet"> --}}
+
+  <script src="{{ asset('js/common.js') }}"></script>
+ 
 </head>
 
 <body>

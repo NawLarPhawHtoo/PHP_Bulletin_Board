@@ -34,7 +34,6 @@ class PostDao implements PostDaoInterface
   public function update(Request $request, $id)
   {
     $post = Post::find($id);
-
     $post->title = $request['title'];
     $post->description = $request['description'];
     $post->status = $request['status'] ? 1 : 0;
@@ -47,8 +46,8 @@ class PostDao implements PostDaoInterface
   public function delete($id)
   {
     $post = Post::find($id);
-    $post->deleted_user_id = auth()->user()->id;
-    $post->save();
+    // $post->deleted_user_id = auth()->user()->id;
+    // $post->save();
     $post->delete();
   }
 }

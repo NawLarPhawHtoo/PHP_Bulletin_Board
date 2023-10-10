@@ -64,12 +64,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
             'remember' => true,
-        ],
-
-        'users' => [
-            'driver' => 'database',
-            'table' => 'users',
-        ],
+        ]
     ],
 
     /*

@@ -42,6 +42,18 @@ class LoginController extends Controller
 
     protected function attemptLogin(Request $request)
     {
+        // $credentials = $request->getCredentials();
+
+        // if (!Auth::validate($credentials)) :
+        //     return redirect()->to('login')
+        //         ->withErrors(trans('auth.failed'));
+        // endif;
+
+        // $user = Auth::getProvider()->retrieveByCredentials($credentials);
+
+        // Auth::login($user, $request->get('remember'));
+
+        // return $this->authenticated($request, $user);
         return $this->guard()->attempt(
             $this->credentials($request),
             $request->filled('remember')

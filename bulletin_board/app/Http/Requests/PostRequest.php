@@ -25,9 +25,7 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'max:255',
-            Rule::unique('posts', 'title')->where('created_user_id', $this->input('created_user_id'))
-        ],
+            'title' => ['required', 'string', 'max:255', 'unique:posts'],
             'description' => ['required'],
         ];
     }
