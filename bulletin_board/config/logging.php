@@ -69,6 +69,8 @@ return [
 
         'slack' => [
             'driver' => 'slack',
+            'channels' => ['stderr'],
+            'ignore_exceptions' => false,
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
@@ -91,11 +93,9 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => StreamHandler::class,
             'formatter' => env('LOG_STDERR_FORMATTER'),
-            'path' => 'php://stderr',
-            'level' => 'debug',
-            // 'with' => [
-            //     'stream' => 'php://stderr',
-            // ],
+            'with' => [
+                'stream' => 'php://stderr',
+            ],
         ],
 
         'syslog' => [
