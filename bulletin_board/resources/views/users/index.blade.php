@@ -357,7 +357,7 @@
 
         <div class="d-flex justify-content-between">
             <form class="col-3" method="GET" action="{{ url()->current() }}">
-                <div class="d-flex align-items-center">
+                <div class="pagination d-flex align-items-center">
                     <label for="perPage" class="col-4">Items per Page: </label>
                     <select class="form-select" id="perPage" name="perPage" onchange="this.form.submit()">
                         <option value="5" {{ $users->perPage() == 5 ? 'selected' : '' }}>5</option>
