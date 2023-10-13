@@ -77,6 +77,11 @@ th {
   background-color: #00B6AC !important;
 }
 
+th, thead{
+  position: sticky;
+  top: 0;
+}
+
 .profile {
   width: 35px;
   height: 35px;
@@ -109,9 +114,29 @@ tbody {
 
 .field-icon {
   float: right;
-  margin-right: 19px;
+  margin-right: 30px;
   margin-top: -28px;
   position: relative;
   cursor: pointer;
   z-index: 2;
+}
+
+.pagination > .form-select {
+  width: 30% !important;
+}
+
+
+.search-form {
+  /* background-color: #f5f5f5; */
+  padding: 20px;
+  /* border: 1px solid #ddd; */
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }

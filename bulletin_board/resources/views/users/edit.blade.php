@@ -7,7 +7,8 @@
                     <div class="card-header py-3">{{ __('User Edit') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('users.confirm-edit', $user->id) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('users.confirm-edit', $user->id) }}"
+                            enctype="multipart/form-data">
                             @csrf
 
                             <div class="row mb-3">
@@ -49,14 +50,11 @@
                                     class="col-md-4 col-form-label text-md-end">{{ __('Type') }}</label>
 
                                 <div class="col-md-6">
-                                    <select id="type" class="form-select @error('type') is-invalid @enderror"
-                                        name="type" required autocomplete="type">
-                                        {{-- @if ($user->type == 0) --}}
-                                            <option value="0" selected>Admin</option>
-                                        {{-- @else --}}
-                                            <option value="1" selected>User </option>
-                                        {{-- @endif --}}
+                                    <select id="type" class="form-select @error('type') is-invalid @enderror" name="type" required autocomplete="type">
+                                        <option value="0" @if ($user->type == 0) selected @endif>Admin</option>
+                                        <option value="1" @if ($user->type == 1) selected @endif>User</option>
                                     </select>
+                                    
                                     @error('type')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -71,7 +69,7 @@
 
                                 <div class="col-md-6">
                                     <input id="phone" type="text"
-                                        class="form-control @error('phone') is-invalid @enderror" name="phone" required
+                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
                                         autocomplete="phone" value="{{ $user->phone }}" />
 
                                     @error('phone')
@@ -88,7 +86,7 @@
 
                                 <div class="col-md-6">
                                     <input id="dob" type="date"
-                                        class="form-control @error('dob') is-invalid @enderror" name="dob" required
+                                        class="form-control @error('dob') is-invalid @enderror" name="dob"
                                         autocomplete="dob" value="{{ $user->dob }}" />
 
                                     @error('dob')
@@ -105,7 +103,7 @@
 
                                 <div class="col-md-6">
                                     <textarea id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address"
-                                        required autocomplete="address" value="">{{ $user->address }} </textarea>
+                                        autocomplete="address" value="">{{ $user->address }} </textarea>
 
                                     @error('address')
                                         <span class="invalid-feedback" role="alert">

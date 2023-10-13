@@ -90,6 +90,8 @@ class UserController extends Controller
     $fromDate = $request->input('fromDate');
     $toDate = $request->input('toDate');
 
+    $perPage = $request->input('perPage', 5);
+
     // Perform the search based on the criteria
     $users = User::query()
       ->when($name, function ($query) use ($name) {
@@ -104,7 +106,7 @@ class UserController extends Controller
       ->when($toDate, function ($query) use ($toDate) {
         return $query->whereDate('created_at', '<=', $toDate);
       })
-      ->paginate(5);
+      ->paginate($perPage);
 
     // Return the view with the search results
     return view('users.index', compact('users'));

@@ -32,6 +32,8 @@ class PostController extends Controller
     $user_type = auth()->user()->type;
     $search = $request->search;
 
+    $perPage = $request->input('perPage', 6);
+
     if ($search !== "") {
       $posts = Post::where(function ($query) use ($search) {
         $query->where('title', 'LIKE', '%' . $search . '%')
@@ -43,25 +45,15 @@ class PostController extends Controller
         $posts->where('status', 1);
       }
 
-      $posts = $posts->orderBy('id', 'DESC')->paginate(6);
+      $posts = $posts->orderBy('id', 'DESC')->paginate($perPage);
       $posts->appends(['search' => $search]);
     } else {
       $posts = $this->postInterface->show();
-
-      // Add a condition based on the user's role to set the status.
       if ($user_type == 1) {
         $posts->where('status', 1);
       }
     }
-    // if ($search !== "") {
-    //   $posts = Post::where(function ($query) use ($search) {
-    //     $query->where('title', 'LIKE', '%' . $search . '%')
-    //       ->orWhere('description', 'LIKE', '%' . $search . '%');
-    //   })->orderBy('id', 'DESC')->paginate(6);
-    //   $posts->appends(['search' => $search]);
-    // } else {
-    //   $posts = $this->postInterface->show();
-    // }
+    session(['exportAll' => true]);
     return view('posts.index', compact('posts'));
   }
 
@@ -69,6 +61,7 @@ class PostController extends Controller
   {
     $userId = auth()->user()->id;
     $search = $request->search;
+    $perPage = $request->input('perPage', 6);
 
     if ($search !== "") {
       $posts = Post::where(function ($query) use ($search) {
@@ -83,12 +76,11 @@ class PostController extends Controller
     } else {
       $posts = Post::where('created_user_id', $userId) // Add this line to filter by user_id
         ->orderBy('id', 'DESC')
-        ->paginate(6);
+        ->paginate($perPage);
     }
-
+    session(['exportAll' => false]);
     return view('posts.index', compact('posts'));
   }
-
 
   /**
    * Show form for creating a new post
@@ -203,7 +195,11 @@ class PostController extends Controller
 
   public function export(Request $request)
   {
+    $exportAll = session('exportAll', true);
+    $userId = auth()->user()->id;
     $filter = $request->input('search');
-    return Excel::download(new ExportPost($filter), 'posts.xlsx');
+    
+    $export = new ExportPost($exportAll, $userId, $filter);
+    return Excel::download($export, 'posts.xlsx');
   }
 }

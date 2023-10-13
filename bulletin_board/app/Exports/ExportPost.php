@@ -15,43 +15,60 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 class ExportPost implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithStrictNullComparison
 {
   private $filter;
+  private $exportAll;
+  private $userId;
 
-  public function __construct($filter = null)
+  public function __construct($exportAll = false, $userId = null, $filter = null)
   {
+    $this->exportAll = $exportAll;
+    $this->userId = $userId;
     $this->filter = $filter;
   }
 
   /**
    * @return \Illuminate\Support\Collection
    */
+
   public function collection()
   {
-    $query = Post::select("id", "title", "description", "status", "created_user_id", "updated_user_id","created_at", "updated_at");
-    if ($this->filter) {
-      $query->where('title', 'like', '%' . $this->filter . '%')
-        ->orWhere('description', 'LIKE', '%' . $this->filter . '%');
+    $query = Post::query();
+
+    if ($this->exportAll) {
+      if (auth()->user()->type == 1) {
+        $query->where('status', 1);
+      }
+      $query->select("id", "title", "description", "status", "created_user_id", "updated_user_id", "created_at", "updated_at");
+    } else {
+      $query->where('created_user_id', $this->userId)
+        ->whereIn('status', [0, 1])
+        ->select("id", "title", "description", "status", "created_user_id", "updated_user_id", "created_at", "updated_at");
     }
+
+    if ($this->filter) {
+      $query->where(function ($q) {
+        $q->where('title', 'like', '%' . $this->filter . '%')
+          ->orWhere('description', 'like', '%' . $this->filter . '%');
+      });
+    }
+
     return $query->get();
   }
-
   public function headings(): array
   {
-    return ["id", "title", "description", "status", "created_user_id", "updated_user_id","created_at", "updated_at"];
+    return ["id", "title", "description", "status", "created_user_id", "updated_user_id", "created_at", "updated_at"];
   }
 
   // Select data from query and set its position
   public function map($post): array
   {
-    // $deletedAtValue = $post->deleted_at ? Date::dateTimeToExcel($post->deleted_at) : null;
+    $status = ($post->status == 1) ? 'Active' : 'Inactive';
     return [
       $post->id,
       $post->title,
       $post->description,
-      $post->status,
+      $status,
       $post->created_user_id,
       $post->updated_user_id,
-      // $post->deleted_user_id,
-      // $deletedAtValue,
       Date::dateTimeToExcel($post->created_at),
       Date::dateTimeToExcel($post->updated_at),
     ];
@@ -63,7 +80,6 @@ class ExportPost implements FromCollection, WithHeadings, WithMapping, ShouldAut
     return [
       'G' => NumberFormat::FORMAT_DATE_DDMMYYYY,
       'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-      // 'J' => NumberFormat::FORMAT_DATE_DDMMYYYY,
     ];
   }
 }

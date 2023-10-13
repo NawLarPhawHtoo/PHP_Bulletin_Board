@@ -22,7 +22,8 @@
                         </li>
                     @elseif (request()->is('password*'))
                         <li class="nav-item">
-                            <a class="btn cmn-btn" style="margin-right: 10px;" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="btn cmn-btn" style="margin-right: 10px;"
+                                href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn cmn-btn" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -61,9 +62,16 @@
                         </li>
                     @endif
                     <li class="nav-item">
-                        <a href="/posts" class="nav-link link {{ request()->is('post*') ? 'active' : '' }}"
+                        <a href="/posts" class="nav-link link {{ request()->is('posts') ? 'active' : '' }}"
                             aria-current="page">Posts</a>
                     </li>
+                    <li class="nav-item d-md-block d-lg-none">
+                        <a href="{{ route('posts.my-posts') }}"
+                            class="nav-link link {{ request()->is('posts/my-posts') ? 'active' : '' }}" aria-current="page">My
+                            Post</a>
+                    </li>
+
+
                 </ul>
 
 
@@ -71,13 +79,13 @@
                 <ul class="navbar-nav ms-auto" style="align-items: center">
                     <!-- Authentication Links -->
                     @if (Auth::user() && Auth::user()->type == '0')
-                        <li class="nav-item" style="margin-right: 10px;">
+                        <li class="nav-item d-none d-lg-block" style="margin-right: 10px;">
                             <a class="btn cmn-btn" href="{{ route('users.create') }}">{{ __('Create User') }}<i
                                     class="bi bi-person-plus-fill"></i></a>
                         </li>
                     @endif
                     {{-- @if (Auth::user() && Auth::user()->type == '1') --}}
-                    <li class="nav-item">
+                    <li class="nav-item d-none d-lg-block">
                         <a class="btn cmn-btn" href="{{ route('posts.my-posts') }}">{{ __('My Posts') }}</a>
                     </li>
                     {{-- @endif --}}
