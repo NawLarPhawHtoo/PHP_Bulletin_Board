@@ -22,6 +22,7 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
-        "bootstrap-icons": "^1.11.1"
+        "bootstrap-icons": "^1.11.1",
+        "vercel-php": "^0.6.0"
     }
 }
